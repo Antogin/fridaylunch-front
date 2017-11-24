@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  background-color: #000a10;
+}
+
+body, html, #app {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100%;
+  overflow: auto;
+}
