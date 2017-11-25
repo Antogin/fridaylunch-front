@@ -7,6 +7,8 @@
       <question-list></question-list>
     </div>
     <div class="modal" v-if="$store.state.ui.searchModal">
+      <div class="shadow"></div>
+
       <search-restaurant></search-restaurant>
 
     </div>

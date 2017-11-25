@@ -3,7 +3,7 @@
     <div class="shadow"></div>
     <div class="box">
       <form v-on:submit.prevent="logIn(user)">
-        <div class="field">
+        <div class="zai-field">
           <div class="control has-icons-left">
             <input class="input" v-model="user.username" type="text" placeholder="username" value="">
             <span class="icon is-small is-left">
@@ -12,7 +12,7 @@
           </div>
         </div>
 
-        <div class="field">
+        <div class="zai-field">
           <div class="control has-icons-left">
             <input class="input" type="password" v-model="user.password" placeholder="password" value="">
             <span class="icon is-small is-left">
@@ -71,46 +71,16 @@
     justify-content: center;
   }
 
+  .zai-field {
+    margin: 10px 0;
+  }
 
-
-  .field {
-    .control {
-      .has-icons-left {
-        height: 3.25em;
-      }
-    }
-    .input {
-      color: white;
-      background-color: #001624;
-      border: 0;
-      height: 3.25em;
-      border-radius: 10px;
-      padding-left: 4.25em;
-    }
-    .input:focus {
-    }
-    .input::placeholder {
-      color: #5b646c;
-    }
-    .button {
-      width: 100%;
-      background-color: #001422;
-      border: 0;
-      color: #e7004d;
-      font-weight: bold;
-    }
-    .icon {
-      background-color: #00253c;
-      color: #e7004d;
-      height: 3.25em;
-      width: 3.25em;
-      border-radius: 5px 0 0 5px;
-    }
-    .control.has-icons-left .input:focus ~ .icon {
-      color: #e7004d;
-      border-color: #e7004d;
-
-    }
+  .button {
+    width: 100%;
+    background-color: #001422;
+    border: 0;
+    color: #e7004d;
+    font-weight: bold;
   }
 
 </style>

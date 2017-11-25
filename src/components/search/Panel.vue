@@ -4,12 +4,11 @@
       Categories
     </p>
     <div class="panel-block">
-      <p class="control has-icons-left">
-        <input class="input" type="text" v-model="cuisineQuery" placeholder="Search">
-        <span class="icon is-small is-left">
-        <i class="fa fa-search"></i>
-      </span>
-      </p>
+      <div class="zai-field">
+        <p class="control ">
+          <input class="input" type="text" v-model="cuisineQuery" placeholder="Search">
+        </p>
+      </div>
     </div>
     <p class="panel-tabs">
       <a v-bind:class="{'is-active': tab === 'establishments'}" v-on:click="changeTabs('establishments')">Establishments</a>
@@ -17,21 +16,21 @@
     </p>
     <div class="panel-container">
       <div v-if="tab === 'cuisines'">
-        <a class="panel-block" v-for="cuisine in filteredCuisines" v-on:click="addCuisine(cuisine.cuisine)"
-           v-bind:class="{'is-active': cuisine.cuisine.isSelected }">
+        <a class="panel-block panel-filter" v-for="cuisine in filteredCuisines" v-on:click="addCuisine(cuisine)"
+           v-bind:class="{'is-active': cuisine.isSelected }">
         <span class="panel-icon">
           <i class="fa fa-cutlery" aria-hidden="true"></i>
         </span>
-          {{cuisine.cuisine.cuisine_name}}
+          {{cuisine.cuisine_name}}
         </a>
       </div>
       <div v-if="tab === 'establishments'">
-        <a class="panel-block" v-for="establishment in filteredEstablishment" v-on:click="addEstablishment(establishment.establishment)"
-           v-bind:class="{'is-active': establishment.establishment.isSelected }">
+        <a class="panel-block panel-filter" v-for="establishment in filteredEstablishment" v-on:click="addEstablishment(establishment)"
+           v-bind:class="{'is-active': establishment.isSelected }">
         <span class="panel-icon">
           <i class="fa fa-cutlery" aria-hidden="true"></i>
         </span>
-          {{establishment.establishment.name}}
+          {{establishment.name}}
         </a>
       </div>
     </div>
@@ -58,13 +57,13 @@
     },
     computed: {
       filteredCuisines: function () {
-        return this.cuisines.filter((cuisine) => {
-          return cuisine.cuisine.cuisine_name.toLowerCase().includes(this.cuisineQuery.toLowerCase())
+        return this.$store.state.searchFilter.cuisineFilter.filter((cuisine) => {
+          return cuisine.cuisine_name.toLowerCase().includes(this.cuisineQuery.toLowerCase())
         })
       },
       filteredEstablishment: function () {
-        return this.establishments.filter((establishment) => {
-          return establishment.establishment.name.toLowerCase().includes(this.cuisineQuery.toLowerCase())
+        return this.$store.state.searchFilter.establishmentFilter.filter((establishment) => {
+          return establishment.name.toLowerCase().includes(this.cuisineQuery.toLowerCase())
         })
       }
     },
@@ -78,40 +77,34 @@
       addCuisine: function (cuisine) {
         cuisine.isSelected = !cuisine.isSelected;
         if (cuisine.isSelected) {
-          this.$emit('addCuisine', cuisine.cuisine_id)
+          this.$store.commit('addCuisine', cuisine);
         } else {
-          this.$emit('removeCuisine', cuisine.cuisine_id)
+          this.$store.commit('removeCuisine', cuisine);
         }
       },
       addEstablishment: function (establishment) {
         establishment.isSelected = !establishment.isSelected;
         if (establishment.isSelected) {
-          this.$emit('addEstablishment', establishment.id)
+          this.$store.commit('addEstablishment', establishment);
         } else {
-          this.$emit('removeEstablishment', establishment.id)
+          this.$store.commit('removeEstablishment', establishment);
         }
       },
       resetFilters: function () {
         var self = this;
-        this.$emit('resetFilters');
-
+        this.$store.commit('resetFilters');
         self.cuisineFilter = '';
-        self.cuisines.forEach((cuisine) => {
-          cuisine.cuisine.isSelected = false;
-        });
-        self.establishments.forEach((establishment) => {
-          establishment.establishment.isSelected = false;
-        });
       }
     },
     created() {
       let cuisines = JSON.parse(localStorage.getItem('cuisines'));
       let establishments = JSON.parse(localStorage.getItem('establishments'));
-      if (cuisines && cuisines.length > 0) {
-        cuisines.forEach((cuisine) => {
-          cuisine.cuisine.isSelected = false;
-        });
-        this.cuisines = cuisines;
+      if (cuisines && cuisines.length > 0 ) {
+        this.$store.commit('setCuisines', cuisines);
+//        cuisines.forEach((cuisine) => {
+//          cuisine.cuisine.isSelected = false;
+//        });
+//        this.cuisines = cuisines;
       } else {
         let cuisinesQuery = {
           city_id: '64',
@@ -127,17 +120,17 @@
           json: true
         };
         axios(cuisinesOptions)
-          .then((response) => {
-            console.log('GA => response.data', JSON.stringify(response.data));
-            this.cuisines = response.data.cuisines;
-            localStorage.setItem('cuisines', JSON.stringify(response.data.cuisines));
-          });
+            .then((response) => {
+//              console.log('GA => response.data', JSON.stringify(response.data));
+//              this.cuisines = response.data.cuisines;
+              this.$store.commit('setCuisines', response.data.cuisines);
+
+              localStorage.setItem('cuisines', JSON.stringify(response.data.cuisines));
+            });
       }
       if (establishments && establishments.length > 0) {
-        establishments.forEach((establishments) => {
-          establishments.establishment.isSelected = false;
-        });
-        this.establishments = establishments;
+        this.$store.commit('setEstablishment', establishments);
+
       } else {
         let establishmentQuery = {
           city_id: '64',
@@ -153,17 +146,17 @@
           json: true
         };
         axios(establishmentOptions)
-          .then((response) => {
-            console.log('GA => response.data', response.data);
-            this.establishments = response.data.establishments;
-            localStorage.setItem('establishments', JSON.stringify(response.data.establishments));
-          });
+            .then((response) => {
+              this.$store.commit('setEstablishment', response.data.establishment);
+              localStorage.setItem('establishments', JSON.stringify(response.data.establishments));
+            });
       }
     },
   }
 </script>
 
 <style lang="scss" scoped>
+  @import "./../../variables";
 
   .panel-container {
     height: 500px;

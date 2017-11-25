@@ -1,16 +1,29 @@
-
-
-
-$d-black: #000a10;
-$zai-pink: #e7004d;
-$primary: $zai-pink;
+@import "variables";
 
 * {
   margin: 0;
   padding: 0;
 }
 
-html{
+
+
+::-webkit-scrollbar-track {
+  //border: 1px solid $zai-pink;
+  background-color: rgba(0,0,0,0);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #00253c;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $zai-pink;
+}
+
+
+
+html {
   background-color: $d-black;
 }
 
@@ -28,6 +41,7 @@ a {
 .box {
   //width: 300px;
   position: relative;
+  color: white;
   background-color: #031e2f;
   .corner {
     width: 40px;
@@ -41,15 +55,15 @@ a {
   }
 }
 
-.card{
+.card {
   background-color: #031e2f;
   color: white;
   border-radius: 5px;
-  .card-header-title{
+  .card-header-title {
     color: $zai-pink;
 
   }
-  .card-footer{
+  .card-footer {
     border-color: $d-black
 
   }
@@ -57,7 +71,7 @@ a {
     color: $zai-pink;
     font-weight: bold;
   }
-  .card-footer-item:not(:last-child){
+  .card-footer-item:not(:last-child) {
     border-color: $d-black
   }
   .corner {
@@ -72,7 +86,7 @@ a {
   }
 }
 
-.title{
+.title {
   color: $zai-pink;
 }
 
@@ -96,6 +110,102 @@ a {
   color: #fff;
 }
 
-.button.is-primary:hover{
+.button.is-primary:hover {
   background-color: $zai-pink;
 }
+
+strong {
+  color: white;
+}
+
+.has-addons {
+  .tag {
+    background-color: #023a5f;
+    color: white;
+  }
+}
+
+.zai-field {
+  .control {
+    .has-icons-left {
+      height: 3.25em;
+    }
+    .input {
+      color: white;
+      background-color: #001624;
+      border: 0;
+      height: 3.25em;
+      border-radius: 10px;
+      padding-left: 4.25em;
+    }
+    .input:focus {
+    }
+    .input::placeholder {
+      color: #5b646c;
+    }
+    .icon {
+      background-color: #00253c;
+      color: #e7004d;
+      height: 3.25em;
+      width: 3.25em;
+      border-radius: 5px 0 0 5px;
+    }
+  }
+}
+
+.button.is-link.is-outlined {
+  border-color: $zai-pink;
+  color: $zai-pink;
+}
+.button.is-link.is-outlined:hover {
+  background-color: $zai-pink;
+  border-color: $zai-pink;
+}
+
+.panel {
+  .panel-heading {
+    background-color: #00253c;
+    color: white;
+    border: 0;
+  }
+  .panel-block {
+    background-color: #00253c;
+    color: white;
+    border: 0;
+  }
+
+  .panel-filter:hover {
+    background-color: $zai-pink;
+  }
+
+  .panel-block.is-active {
+    color: $zai-pink;
+    .panel-icon {
+      color: $zai-pink;
+    }
+  }
+
+  .panel-block.is-active:hover {
+    color: white;
+    .panel-icon {
+      color: white;
+    }
+  }
+
+  .panel-tabs {
+    background-color: #00253c;
+    color: white;
+    border-color: #00253c;
+    a {
+      color: white;
+      border-bottom-color: #00253c;
+    }
+    .is-active {
+      color: $zai-pink;
+      border-bottom-color: $zai-pink;
+    }
+  }
+}
+
+
+

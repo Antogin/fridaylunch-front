@@ -1,40 +1,42 @@
 <template>
   <div class="search-restaurant">
+
     <nav id="navbar" class="navbar is-fixed-top ">
       <div id="specialShadow" class="bd-special-shadow" style="opacity: 0; transform: scaleY(1);"></div>
 
 
       <div class="navbar-brand">
         <form v-on:submit.prevent="search(searchQuery)">
-          <div class="control">
-            <input class="input" type="text" v-model="searchQuery" placeholder="Search">
+          <div class="zai-field">
+
+            <div class="control has-icons-left">
+              <input class="input" v-model="searchQuery" type="text" placeholder="Search">
+              <span class="icon is-small is-left">
+              <i class="fa fa-search"></i>
+            </span>
+            </div>
           </div>
+          <button class="button is-primary" v-on:click="search(searchQuery)">search</button>
         </form>
       </div>
       <a class="delete is-large" v-on:click="closeModal"></a>
 
     </nav>
     <section class="section">
-      <hr>
 
       <div class="page-component">
         <div class="filters">
-          <span class="tag is-info">Info</span>
-          <span class="tag is-info">Info</span>
-          <span class="tag is-info">Info</span>
-          <span class="tag is-info">Info</span>
+          <p class="tag" v-on:click="removeCuisine(tag)" v-for="tag in selectedCusines">
+            {{tag.cuisine_name}}</p>
+
+          <p class="tag" v-on:click="removeEstablishment(tag)" v-for="tag in selectedEstablishments">{{tag.name}}</p>
 
         </div>
       </div>
-      <hr>
 
 
       <div class="side-panel">
-        <panel v-on:addCuisine="addCuisine"
-               v-on:removeCuisine="removeCuisine"
-               v-on:addEstablishment="addEstablishment"
-               v-on:removeEstablishment="removeEstablishment"
-               v-on:resetFilters="resetFilters"></panel>
+        <panel></panel>
       </div>
       <div class="grid" v-on:scroll="checkBottom($event)">
         <div class="grid-item" v-for="searchedRestaurant in searchedRestaurants">
@@ -68,39 +70,31 @@
       }
     },
     methods: {
-      addEstablishment: function (string) {
+      addEstablishment: function (tag) {
         var self = this;
-        self.establishmentFilter.push(string)
+        self.establishmentFilter.push(tag)
       },
-      removeEstablishment: function (string) {
-        var self = this;
-        self.establishmentFilter = self.establishmentFilter.filter((id) => id !== string)
+      removeEstablishment: function (establishment) {
+        this.$store.commit('removeEstablishment', establishment.id);
       },
-      addCuisine: function (string) {
+      addCuisine: function (cuisine) {
         var self = this;
-        self.cuisineFilter.push(string)
+        self.cuisineFilter.push(cuisine)
       },
-      removeCuisine: function (string) {
-        var self = this;
-        self.cuisineFilter = self.cuisineFilter.filter((id) => id !== string)
-      },
-      resetFilters: function () {
-        console.log('resetFilters');
-        var self = this;
-        self.cuisineFilter = [];
-        self.establishmentFilter = []
+      removeCuisine: function (cuisine) {
+        this.$store.commit('removeCuisine', cuisine.cuisine_id);
       },
       closeModal: function () {
         this.$store.commit('closeModal');
       },
       search: function (searchQuery) {
-        var self = this;
+        console.log(this.$store);
         let query = {
           entity_id: '64',
           entity_type: 'city',
-          q: self.searchQuery,
-          cuisines: self.cuisineFilter.toString(),
-          establishment_type: self.establishmentFilter.toString(),
+          q: searchQuery,
+          cuisines: this.$store.getters.cuisineFilterIds.toString(),
+          establishment_type: this.$store.getters.establishmentFilterIds.toString(),
         };
         ZomatoService.search(query).then((response) => {
           this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
@@ -116,6 +110,14 @@
         return this.$store.getters.formattedSearchRestaurants
 
       },
+
+      selectedEstablishments() {
+        return this.$store.state.searchFilter.establishmentFilter.filter((establishment => establishment.isSelected))
+      },
+
+      selectedCusines() {
+        return this.$store.state.searchFilter.cuisineFilter.filter((establishment => establishment.isSelected))
+      }
     },
     mounted() {
       let query = {
@@ -133,18 +135,28 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  @import "./../../variables";
+
   .search-restaurant {
     position: fixed;
     left: 0;
     top: 0;
     width: 100vw;
     height: 100vh;
+    background-color: $d-black;
+  }
+
+  .tag {
+    margin-right: 3px;
+    background-color: $zai-pink;
+    color: white;
+    cursor: pointer;
   }
 
   .grid {
     display: grid;
     grid-template-columns: 33% 33% 33%;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 75px);
     overflow: auto;
     .grid-item {
       padding: 10px;
@@ -157,22 +169,35 @@
   }
 
   .page-component {
-    /*margin: 10px 0;*/
+    margin: 30px 0px 16px 0;
   }
 
   .delete {
     position: absolute;
-    top: 10px;
-    right: 0;
+    top: 17px;
+    right: 20px;
+    color: $zai-pink;
+  }
+
+  .delete:after {
+    background-color: $zai-pink;
+  }
+
+  .delete:before {
+    background-color: $zai-pink;
   }
 
   form {
     display: flex;
     align-items: center;
-
+    .button {
+      margin-left: 20px;
+    }
   }
 
   .navbar {
     padding: 10px 1.5rem;
+    background-color: $d-black;
+
   }
 </style>

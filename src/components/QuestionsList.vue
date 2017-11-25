@@ -40,6 +40,9 @@
               <a class="level-item">
                 <span class="icon is-small"><i class="fa fa-heart"></i></span>
               </a>
+              <a class="level-item" v-on:click="removeRestaurant(restaurant)">
+                <span class="icon is-small"><i class="fa fa-trash"></i></span>
+              </a>
             </div>
           </nav>
         </div>
@@ -60,7 +63,11 @@
     methods: {
       openModal() {
         this.$store.commit('openModal');
-      }
+      },
+      removeRestaurant: function (restaurant) {
+        console.log('removeRestaurant', restaurant);
+        this.$store.commit('removeRestaurant',restaurant)
+      },
     },
     computed: {
       selectedRestaurants() {
@@ -87,6 +94,10 @@
     .address{
       margin: 25px 0;
     }
+  }
+
+  .has-addons{
+    margin-left: 10px;
   }
 
 </style>
