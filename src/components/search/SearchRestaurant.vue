@@ -1,8 +1,8 @@
 <template>
   <div class="search-restaurant">
+    <div class="shadow"></div>
 
     <nav id="navbar" class="navbar is-fixed-top ">
-      <div id="specialShadow" class="bd-special-shadow" style="opacity: 0; transform: scaleY(1);"></div>
 
 
       <div class="navbar-brand">
@@ -25,6 +25,7 @@
     <section class="section">
 
       <div class="page-component">
+
         <div class="filters">
           <p class="tag" v-on:click="removeCuisine(tag)" v-for="tag in selectedCusines">
             {{tag.cuisine_name}}</p>
@@ -38,7 +39,7 @@
       <div class="side-panel">
         <panel></panel>
       </div>
-      <div class="grid" v-on:scroll="checkBottom($event)">
+      <div class="grid">
         <div class="grid-item" v-for="searchedRestaurant in searchedRestaurants">
           <restaurant-card v-bind:restaurant="searchedRestaurant"></restaurant-card>
         </div>
