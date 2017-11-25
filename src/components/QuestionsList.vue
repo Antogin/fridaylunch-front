@@ -65,7 +65,6 @@
         this.$store.commit('openModal');
       },
       removeRestaurant: function (restaurant) {
-        console.log('removeRestaurant', restaurant);
         this.$store.commit('removeRestaurant',restaurant)
       },
     },

@@ -49,8 +49,6 @@
     },
     methods: {
       logIn: function (user) {
-        console.log('user', user.username);
-        console.log('password', user.password);
         AuthService.auth(user.username,  user.password);
 
 

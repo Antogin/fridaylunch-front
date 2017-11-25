@@ -3,9 +3,6 @@ import axios from 'axios';
 export default {
 
   auth(username, password) {
-    console.log('AUTH');
-    console.log(username);
-    console.log(password);
     let authOptions = {
       method: 'GET',
       url: 'http://localhost:8080/hello/',
@@ -20,7 +17,6 @@ export default {
     };
     axios(authOptions)
         .then((response) => {
-          console.log('GA => response', response)
         });
   }
 

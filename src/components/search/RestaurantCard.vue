@@ -53,11 +53,9 @@
     },
     methods: {
       addRestaurant: function (restaurant) {
-        console.log('addRestaurant', restaurant);
         this.$store.commit('addRestaurant',restaurant)
       },
       removeRestaurant: function (restaurant) {
-        console.log('removeRestaurant', restaurant);
         this.$store.commit('removeRestaurant',restaurant)
       },
     },

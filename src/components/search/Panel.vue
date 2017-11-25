@@ -71,7 +71,6 @@
       changeTabs: function (tab) {
         var self = this;
         self.tab = tab;
-        console.log(tab);
 
       },
       addCuisine: function (cuisine) {

@@ -88,7 +88,6 @@
         this.$store.commit('closeModal');
       },
       search: function (searchQuery) {
-        console.log(this.$store);
         let query = {
           entity_id: '64',
           entity_type: 'city',
@@ -126,8 +125,6 @@
       };
       ZomatoService.search(query).then((response) => {
         this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
-
-        console.log(response.data);
       })
     }
   }

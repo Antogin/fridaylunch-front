@@ -47,8 +47,6 @@ export const store = new Vuex.Store({
         return restaurant
       });
 
-      console.log('refresh');
-
       return rest;
     }
   },
@@ -103,7 +101,6 @@ export const store = new Vuex.Store({
     },
 
     addCuisine: (state, id) => {
-      console.log(id);
       return state.searchFilter.cuisineFilter = state.searchFilter.cuisineFilter.map((cuisine) => {
             if (cuisine.cuisine_id === id) {
               cuisine.isSelected = true;
