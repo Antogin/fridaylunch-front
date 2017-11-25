@@ -4,9 +4,11 @@ export default {
 
   auth(username, password) {
     console.log('AUTH');
+    console.log(username);
+    console.log(password);
     let authOptions = {
-      method: 'POST',
-      url: 'https://localhost:4200',
+      method: 'GET',
+      url: 'http://localhost:8080/hello/',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Access-Control-Allow-Origin': '*'

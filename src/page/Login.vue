@@ -2,30 +2,31 @@
   <div class="container">
     <div class="shadow"></div>
     <div class="box">
-      <div class="field">
-        <div class="control has-icons-left">
-          <input class="input" type="text" placeholder="username" value="">
-          <span class="icon is-small is-left">
-      <i class="fa fa-user"></i>
-    </span>
+      <form v-on:submit.prevent="logIn(user)">
+        <div class="field">
+          <div class="control has-icons-left">
+            <input class="input" v-model="user.username" type="text" placeholder="username" value="">
+            <span class="icon is-small is-left">
+              <i class="fa fa-user"></i>
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div class="field">
-        <div class="control has-icons-left">
-          <input class="input" type="password" placeholder="password" value="">
-          <span class="icon is-small is-left">
-          <i class="fa fa-lock"></i>
-        </span>
+        <div class="field">
+          <div class="control has-icons-left">
+            <input class="input" type="password" v-model="user.password" placeholder="password" value="">
+            <span class="icon is-small is-left">
+              <i class="fa fa-lock"></i>
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <button class="button">Sign In</button>
+        <div class="field">
+          <div class="control">
+            <button class="button" type="submit">Sign In</button>
+          </div>
         </div>
-      </div>
-      <div class="corner"></div>
-
+          <div class="corner"></div>
+      </form>
     </div>
 
   </div>
@@ -36,35 +37,32 @@
 <script>
   import AuthService from './../services/auth.service'
 
-
   export default {
     name: 'Card',
     data() {
-      return {}
+      return {
+        user: {
+          username: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      logIn: function (user) {
+        console.log('user', user.username);
+        console.log('password', user.password);
+        AuthService.auth(user.username,  user.password);
+
+
+      },
     },
     created() {
-      console.log(AuthService);
-      AuthService.auth();
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  .box {
-    width: 300px;
-    position: relative;
-    background-color: #031e2f;
-    .corner{
-      width: 40px;
-      height: 30px;
-      right: 0;
-      bottom: -15px;
-      border-top: 32px solid rgba(255, 0, 0, 0);
-      border-right: 40px solid #000a10;
-      position: absolute;
-      color: black;
-    }
-  }
+
 
   .container {
     height: 100%;
@@ -73,19 +71,7 @@
     justify-content: center;
   }
 
-  .shadow {
-    box-shadow: 15px 31px 176px 300px #001f34;
-    z-index: -1;
-    position: absolute;
-    border-radius: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    height: 500px;
-    top: -690px;
-    width: 18%;
-  }
+
 
   .field {
     .control {

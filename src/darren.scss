@@ -1,10 +1,17 @@
+
+
+
+$d-black: #000a10;
+$zai-pink: #e7004d;
+$primary: $zai-pink;
+
 * {
   margin: 0;
   padding: 0;
 }
 
 html{
-  background-color: #000a10;
+  background-color: $d-black;
 }
 
 body, html, #app {
@@ -12,4 +19,83 @@ body, html, #app {
   padding: 0 !important;
   height: 100%;
   overflow: auto;
+}
+
+a {
+  color: $zai-pink;
+}
+
+.box {
+  //width: 300px;
+  position: relative;
+  background-color: #031e2f;
+  .corner {
+    width: 40px;
+    height: 30px;
+    right: 0;
+    bottom: -15px;
+    border-top: 32px solid rgba(255, 0, 0, 0);
+    border-right: 40px solid #000a10;
+    position: absolute;
+    color: black;
+  }
+}
+
+.card{
+  background-color: #031e2f;
+  color: white;
+  border-radius: 5px;
+  .card-header-title{
+    color: $zai-pink;
+
+  }
+  .card-footer{
+    border-color: $d-black
+
+  }
+  .card-footer-item {
+    color: $zai-pink;
+    font-weight: bold;
+  }
+  .card-footer-item:not(:last-child){
+    border-color: $d-black
+  }
+  .corner {
+    width: 40px;
+    height: 30px;
+    right: 0;
+    bottom: -15px;
+    border-top: 32px solid rgba(255, 0, 0, 0);
+    border-right: 40px solid #000a10;
+    position: absolute;
+    color: black;
+  }
+}
+
+.title{
+  color: $zai-pink;
+}
+
+.shadow {
+  box-shadow: 15px 31px 176px 300px #001f34;
+  z-index: -1;
+  position: absolute;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  height: 500px;
+  top: -690px;
+  width: 18%;
+}
+
+.button.is-primary {
+  background-color: $zai-pink;
+  border-color: transparent;
+  color: #fff;
+}
+
+.button.is-primary:hover{
+  background-color: $zai-pink;
 }
