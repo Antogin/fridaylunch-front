@@ -38,7 +38,7 @@ export const store = new Vuex.Store({
 
     formattedSearchRestaurants: state => {
 
-      let rest = state.searchedRestaurants.map((restaurant) => {
+      return state.searchedRestaurants.map((restaurant) => {
         if (state.selectedRestaurants.map((restaurant) => restaurant.id).some((id) => id === restaurant.id)) {
           restaurant.isSelected = true
         } else {
@@ -47,7 +47,6 @@ export const store = new Vuex.Store({
         return restaurant
       });
 
-      return rest;
     }
   },
 
