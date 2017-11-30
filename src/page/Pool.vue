@@ -2,6 +2,10 @@
   <div class="container">
     <div class="shadow"></div>
 
+    <div class="loader-box">
+      <!--<custom-loader></custom-loader>-->
+    </div>
+
     <div class="grid">
       <create-question></create-question>
       <question-list></question-list>
@@ -46,7 +50,7 @@
     padding-top: 50px;
   }
 
-  .modal{
+  .modal {
     position: fixed;
     background-color: white;
     left: 0;

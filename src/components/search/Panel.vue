@@ -77,7 +77,6 @@
     },
     methods: {
       toggleCollapse: function (state) {
-        console.log(state);
         this.$store.commit('toggleCollapse', !state);
       },
       changeTabs: function (tab) {
@@ -118,7 +117,6 @@
       } else {
         ZomatoService.getCuisines()
             .then((response) => {
-              console.log(response);
               this.$store.commit('setCuisines', response.data.cuisines);
               localStorage.setItem('cuisines', JSON.stringify(response.data.cuisines));
             });

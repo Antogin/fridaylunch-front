@@ -1,21 +1,22 @@
 import axios from 'axios';
 
 export default {
+  apiKey: '17f04c380be2bbe032778ba7c767ca50',
 
   search(query) {
+
     let authOptions = {
       method: 'GET',
       url: 'https://developers.zomato.com/api/v2.1/search',
       params: query,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'user-key': '17f04c380be2bbe032778ba7c767ca50'
+        'user-key': this.apiKey
       },
       json: true
     };
     return axios(authOptions)
   },
-
 
   getEstablishment() {
     let establishmentQuery = {
@@ -27,7 +28,7 @@ export default {
       params: establishmentQuery,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'user-key': '17f04c380be2bbe032778ba7c767ca50'
+        'user-key': this.apiKey
       },
       json: true
     };
@@ -45,7 +46,7 @@ export default {
       params: cuisinesQuery,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'user-key': '17f04c380be2bbe032778ba7c767ca50'
+        'user-key': this.apiKey
       },
       json: true
     };

@@ -16,7 +16,9 @@
             </span>
             </div>
           </div>
-          <button class="button is-primary" v-on:click="search(searchQuery)">search</button>
+          <button class="button is-primary" v-bind:class="{'is-loading': isLoading}" v-on:click="search(searchQuery)">
+            search
+          </button>
         </form>
       </div>
       <a class="delete is-large" v-on:click="closeModal"></a>
@@ -39,7 +41,7 @@
         <div class="side-panel">
           <panel></panel>
         </div>
-        <div class="grid">
+        <div class="grid" v-on:scroll="handleScroll($event)">
           <div class="grid-item" v-for="searchedRestaurant in searchedRestaurants">
             <restaurant-card v-bind:restaurant="searchedRestaurant"></restaurant-card>
           </div>
@@ -68,10 +70,18 @@
         searchQuery: '',
         cuisineFilter: [],
         establishmentFilter: [],
+        isLoading: false,
         pageInfo: null
       }
     },
     methods: {
+      handleScroll: function (event) {
+        if (event.srcElement.scrollHeight - event.srcElement.offsetHeight - event.srcElement.scrollTop < 50) {
+          console.log('LOAD');
+          this.search(this.searchQuery)
+        }
+      },
+
       addEstablishment: function (tag) {
         var self = this;
         self.establishmentFilter.push(tag)
@@ -90,6 +100,12 @@
         this.$store.commit('closeModal');
       },
       search: function (searchQuery) {
+        var self = this;
+
+        if (self.isLoading) {
+          return
+        }
+        self.isLoading = true;
         let query = {
           entity_id: '64',
           entity_type: 'city',
@@ -97,13 +113,12 @@
           cuisines: this.$store.getters.cuisineFilterIds.toString(),
           establishment_type: this.$store.getters.establishmentFilterIds.toString(),
         };
+
         ZomatoService.search(query).then((response) => {
           this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
-
+          self.isLoading = false;
         });
-
       },
-
     },
     computed: {
       searchedRestaurants() {
@@ -121,11 +136,15 @@
       }
     },
     mounted() {
+      this.isLoading = true;
+
       let query = {
         entity_id: '64',
         entity_type: 'city',
       };
       ZomatoService.search(query).then((response) => {
+        this.isLoading = false;
+
         this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
       })
     }
@@ -214,6 +233,7 @@
   form {
     display: flex;
     align-items: center;
+    max-width: calc(100vw - 100px);
     .button {
       margin-left: 20px;
     }

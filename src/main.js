@@ -9,6 +9,8 @@ import QuestionList from './components/QuestionsList.vue'
 import RestaurantCard from './components/search/RestaurantCard.vue';
 import Panel from './components/search/Panel.vue';
 import SearchRestaurant from './components/search/SearchRestaurant.vue';
+import InfiniteScroll from './directives/infinite-scroll';
+import Loader from './components/Loader.vue';
 
 Vue.config.productionTip = false;
 
@@ -17,6 +19,8 @@ Vue.component('question-list', QuestionList);
 Vue.component('restaurant-card ', RestaurantCard);
 Vue.component('panel-card', Panel);
 Vue.component('search-restaurant', SearchRestaurant);
+Vue.component('custom-loader', Loader);
+Vue.directive('scroll', InfiniteScroll);
 
 /* eslint-disable no-new */
 new Vue({
