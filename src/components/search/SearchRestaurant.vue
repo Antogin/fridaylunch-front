@@ -35,13 +35,14 @@
         </div>
       </div>
 
-
-      <div class="side-panel">
-        <panel></panel>
-      </div>
-      <div class="grid">
-        <div class="grid-item" v-for="searchedRestaurant in searchedRestaurants">
-          <restaurant-card v-bind:restaurant="searchedRestaurant"></restaurant-card>
+      <div class="search-view">
+        <div class="side-panel">
+          <panel></panel>
+        </div>
+        <div class="grid">
+          <div class="grid-item" v-for="searchedRestaurant in searchedRestaurants">
+            <restaurant-card v-bind:restaurant="searchedRestaurant"></restaurant-card>
+          </div>
         </div>
       </div>
     </section>
@@ -106,11 +107,11 @@
     },
     computed: {
       searchedRestaurants() {
-
         return this.$store.getters.formattedSearchRestaurants
-
       },
-
+      panelFiltersIsCollapsed: function () {
+        return this.$store.state.ui.panelFiltersIsCollapsed
+      },
       selectedEstablishments() {
         return this.$store.state.searchFilter.establishmentFilter.filter((establishment => establishment.isSelected))
       },
@@ -153,17 +154,42 @@
 
   .grid {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
     height: calc(100vh - 75px);
     overflow: auto;
     .grid-item {
       padding: 10px;
     }
+
+    @include breakpoint(notebook) {
+      grid-template-columns: 50% 50%;
+    }
+
+    @include breakpoint(laptop) {
+      grid-template-columns: 33% 33% 33%;
+    }
+
+    @include breakpoint(desktop) {
+      grid-template-columns: 25% 25% 25% 25%;
+    }
+    @include breakpoint(mobileonly) {
+      float: left;
+    }
   }
 
   .side-panel {
-    width: 350px;
     float: left;
+    @include breakpoint(notebook) {
+      width: 250px;
+    }
+
+    @include breakpoint(laptop) {
+      width: 350px;
+    }
+
+    @include breakpoint(mobileonly) {
+      width: 100%;
+    }
+
   }
 
   .page-component {

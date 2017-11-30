@@ -18,7 +18,8 @@ export const store = new Vuex.Store({
       cuisineFilter: []
     },
     ui: {
-      searchModal: false
+      searchModal: false,
+      panelFiltersIsCollapsed: true
     }
   },
 
@@ -51,6 +52,10 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
+    toggleCollapse: (state, payload) => {
+      return state.ui.panelFiltersIsCollapsed = payload;
+    },
+
     addRestaurant: (state, payload) => {
       state.searchedRestaurants = state.searchedRestaurants.splice(0);
       return state.selectedRestaurants.push(payload)

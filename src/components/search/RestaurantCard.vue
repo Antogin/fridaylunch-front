@@ -21,7 +21,7 @@
         </div>
         <div class="media-content">
           <p class="title is-4"> {{restaurant.name}}</p>
-          <p>{{restaurant.cuisines}}</p>
+          <p class="cuisines">{{restaurant.cuisines}}</p>
         </div>
       </div>
 
@@ -32,8 +32,11 @@
       </div>
     </div>
     <footer class="card-footer">
-      <a v-on:click="addRestaurant(restaurant)" v-if="!restaurant.isSelected" class="card-footer-item">Select</a>
-      <a v-on:click="removeRestaurant(restaurant)" v-if="restaurant.isSelected" class="card-footer-item">Remove</a>
+      <a v-on:click="addRestaurant(restaurant)" v-if="!restaurant.isSelected" class="card-footer-item">Add</a>
+      <a v-on:click="removeRestaurant(restaurant)" v-if="restaurant.isSelected" class="card-footer-item added">
+        <i class="fa fa-check" aria-hidden="true"></i>
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </a>
       <a v-bind:href="restaurant.menu_url" target="_blank" class="card-footer-item">Menu</a>
     </footer>
 
@@ -48,27 +51,45 @@
     name: 'restaurantCard',
     props: ['restaurant'],
     data() {
-      return {
-      }
+      return {}
     },
     methods: {
       addRestaurant: function (restaurant) {
-        this.$store.commit('addRestaurant',restaurant)
+        this.$store.commit('addRestaurant', restaurant)
       },
       removeRestaurant: function (restaurant) {
-        this.$store.commit('removeRestaurant',restaurant)
+        this.$store.commit('removeRestaurant', restaurant)
       },
     },
   }
 </script>
 
 <style lang="scss" scoped>
+  @import "./../../variables";
+
   .title {
     margin-bottom: 0.5rem;
   }
 
   .tags {
     margin-bottom: 0;
+  }
+
+  .media-content {
+    .cuisines {
+      font-size: 12px;
+      color: white;
+    }
+  }
+
+  .card-footer {
+    .added {
+      background-color: $zai-pink;
+      color: white;
+      .fa-times {
+        display: none;
+      }
+    }
   }
 
 </style>

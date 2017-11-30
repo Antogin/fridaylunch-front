@@ -1,8 +1,13 @@
 <template>
-  <nav class="panel">
+  <nav class="panel" v-bind:class="{'is-collapsed': panelFiltersIsCollapsed}">
     <p class="panel-heading">
       Categories
+      <span class="icon" v-on:click="toggleCollapse(panelFiltersIsCollapsed)">
+        <i class="fa fa-angle-down" aria-hidden="true" v-if="panelFiltersIsCollapsed"></i>
+        <i class="fa fa-angle-up" aria-hidden="true" v-if="!panelFiltersIsCollapsed"></i>
+      </span>
     </p>
+
     <div class="panel-block">
       <div class="zai-field">
         <p class="control ">
@@ -65,9 +70,16 @@
         return this.$store.state.searchFilter.establishmentFilter.filter((establishment) => {
           return establishment.name.toLowerCase().includes(this.filterQuery.toLowerCase())
         })
-      }
+      },
+      panelFiltersIsCollapsed: function () {
+        return this.$store.state.ui.panelFiltersIsCollapsed
+      },
     },
     methods: {
+      toggleCollapse: function (state) {
+        console.log(state);
+        this.$store.commit('toggleCollapse', !state);
+      },
       changeTabs: function (tab) {
         var self = this;
         self.tab = tab;
@@ -130,8 +142,47 @@
 <style lang="scss" scoped>
   @import "./../../variables";
 
-  .panel-container {
-    height: 500px;
-    overflow: auto;
+  .side-panel {
+
+  }
+
+  .panel {
+    .panel-heading {
+      .icon {
+        color: $zai-pink;
+        float: right;
+        display: none;
+        @include breakpoint(mobileonly) {
+          display: block;
+        }
+      }
+    }
+    .panel-container {
+      height: 500px;
+      overflow: auto;
+      @include breakpoint(mobileonly) {
+        height: calc(100vh - 330px);
+
+      }
+    }
+  }
+
+  .is-collapsed {
+    @include breakpoint(mobileonly) {
+
+      .panel-container {
+        height: auto;
+
+      }
+      .panel-block, .panel-tabs {
+        display: none;
+        height: auto;
+      }
+    }
+  }
+
+  .panel-container:hover::-webkit-scrollbar {
+    /*width: 5px;*/
+
   }
 </style>

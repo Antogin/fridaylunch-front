@@ -1,3 +1,26 @@
+// colors
+
 $d-black: #000a10;
 $zai-pink: #e7004d;
 $primary: $zai-pink;
+
+// breakpoints
+
+@mixin breakpoint($point) {
+  @if $point == desktop {
+    @media (min-width: 1640px) { @content ; }
+  }
+  @else if $point == laptop {
+    @media (min-width: 1480px) { @content ; }
+  }
+  @else if $point == notebook {
+    @media (min-width: 1280px) { @content ; }
+  }
+  @else if $point == tablet {
+    @media (min-width: 1150px) { @content ; }
+  }
+  @else if $point == mobileonly {
+    @media (max-width: 700px)  { @content ; }
+
+  }
+}
