@@ -13,6 +13,12 @@ export const store = new Vuex.Store({
 
     selectedRestaurants: [],
     searchedRestaurants: [],
+
+    searchPageInfo: {
+      start: null,
+      step: null,
+    },
+
     searchFilter: {
       establishmentFilter: [],
       cuisineFilter: []
@@ -24,6 +30,10 @@ export const store = new Vuex.Store({
   },
 
   getters: {
+    nextSearchPage: state => {
+      return state.searchPageInfo.start + state.searchPageInfo.step;
+    },
+
     restaurantId: state => {
       return state.selectedRestaurants.map((restaurant) => restaurant.id)
     },
@@ -52,6 +62,7 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
+
     toggleCollapse: (state, payload) => {
       return state.ui.panelFiltersIsCollapsed = payload;
     },
@@ -145,8 +156,23 @@ export const store = new Vuex.Store({
         }
         return restaurant
       });
-    }
+    },
 
+    pushSearchRestaurant: (state, payload) => {
+
+      state.searchedRestaurants = state.searchedRestaurants.concat(payload.map((restaurant) => {
+        if (state.selectedRestaurants.map((restaurant) => restaurant.id).some((id) => id === restaurant.id)) {
+          restaurant.isSelected = true
+        } else {
+          restaurant.isSelected = false
+        }
+        return restaurant
+      }));
+    },
+
+    setSearchRestaurantPage: (state, payload) => {
+      state.searchPageInfo = payload;
+    },
 
   },
 

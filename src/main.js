@@ -8,7 +8,7 @@ import CreateQuestion from './components/CreateQustion.vue'
 import QuestionList from './components/QuestionsList.vue'
 import RestaurantCard from './components/search/RestaurantCard.vue';
 import Panel from './components/search/Panel.vue';
-import SearchRestaurant from './components/search/SearchRestaurant.vue';
+import SearchRestaurant from './page/SearchRestaurant.vue';
 import InfiniteScroll from './directives/infinite-scroll';
 import Loader from './components/Loader.vue';
 

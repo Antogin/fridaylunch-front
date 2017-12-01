@@ -2,7 +2,8 @@
   <div class="question-list">
     <div class="list-header">
       <h1 class="title">Restaurant</h1>
-      <a class="button is-primary" v-on:click="openModal">Add restaurant</a>
+      <router-link to="search" class="button is-primary">Add restaurant</router-link>
+      <!--<a class="button is-primary" v-on:click="openModal" >Add restaurant</a>-->
 
     </div>
     <div class="box" v-for="restaurant in selectedRestaurants">

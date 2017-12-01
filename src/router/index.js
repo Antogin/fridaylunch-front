@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Login from '@/page/Login'
 import Pool from '@/page/Pool'
+import SearchRestaurant from '@/page/SearchRestaurant'
 
 Vue.use(Router);
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/pool',
       name: 'pool',
       component: Pool
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: SearchRestaurant
     }
   ]
 })

@@ -21,7 +21,10 @@
           </button>
         </form>
       </div>
-      <a class="delete is-large" v-on:click="closeModal"></a>
+      <!--<a class="delete is-large" v-on:click="closeModal"></a>-->
+      <router-link to="pool" class="button is-primary toPool is-right is-pulled-right">
+        Restaurant list
+      </router-link>
 
     </nav>
     <section class="section">
@@ -52,10 +55,9 @@
 </template>
 
 <script>
-  import axios from 'axios';
-  import Panel from "./Panel.vue";
-  import RestaurantCard from "./RestaurantCard.vue";
-  import ZomatoService from "./../../services/zomato.service";
+  import Panel from "./../components/search/Panel.vue";
+  import RestaurantCard from "./../components/search/RestaurantCard.vue";
+  import ZomatoService from "./../services/zomato.service";
 
 
   export default {
@@ -77,11 +79,36 @@
     methods: {
       handleScroll: function (event) {
         if (event.srcElement.scrollHeight - event.srcElement.offsetHeight - event.srcElement.scrollTop < 50) {
-          console.log('LOAD');
-          this.search(this.searchQuery)
+          this.nextPage(this.searchQuery)
         }
       },
+      nextPage() {
+        var self = this;
 
+
+        if (self.isLoading) {
+          return
+        }
+        self.isLoading = true;
+        let query = {
+          entity_id: '64',
+          entity_type: 'city',
+          q: self.searchQuery,
+          start: self.nextSearchPage,
+          cuisines: this.$store.getters.cuisineFilterIds.toString(),
+          establishment_type: this.$store.getters.establishmentFilterIds.toString(),
+        };
+
+
+        ZomatoService.search(query).then((response) => {
+          this.$store.commit('pushSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
+          this.$store.commit('setSearchRestaurantPage', {
+            step: response.data.results_shown,
+            start: response.data.results_start
+          });
+          self.isLoading = false;
+        });
+      },
       addEstablishment: function (tag) {
         var self = this;
         self.establishmentFilter.push(tag)
@@ -99,7 +126,7 @@
       closeModal: function () {
         this.$store.commit('closeModal');
       },
-      search: function (searchQuery) {
+      search: function (searchQuery, start) {
         var self = this;
 
         if (self.isLoading) {
@@ -114,8 +141,13 @@
           establishment_type: this.$store.getters.establishmentFilterIds.toString(),
         };
 
+
         ZomatoService.search(query).then((response) => {
           this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
+          this.$store.commit('setSearchRestaurantPage', {
+            step: response.data.results_shown,
+            start: response.data.results_start
+          });
           self.isLoading = false;
         });
       },
@@ -124,6 +156,11 @@
       searchedRestaurants() {
         return this.$store.getters.formattedSearchRestaurants
       },
+
+      nextSearchPage() {
+        return this.$store.getters.nextSearchPage
+      },
+
       panelFiltersIsCollapsed: function () {
         return this.$store.state.ui.panelFiltersIsCollapsed
       },
@@ -144,8 +181,11 @@
       };
       ZomatoService.search(query).then((response) => {
         this.isLoading = false;
-
         this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
+        this.$store.commit('setSearchRestaurantPage', {
+          step: response.data.results_shown,
+          start: response.data.results_start
+        });
       })
     }
   }
@@ -153,7 +193,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import "./../../variables";
+  @import "./../variables";
 
   .search-restaurant {
     position: fixed;
@@ -242,6 +282,8 @@
   .navbar {
     padding: 10px 1.5rem;
     background-color: $d-black;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 </style>

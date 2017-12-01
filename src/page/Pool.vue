@@ -23,11 +23,9 @@
 
   import QuestionList from "../components/QuestionsList.vue";
   import CreateQuestion from "../components/CreateQustion.vue";
-  import SearchRestaurant from "../components/search/SearchRestaurant.vue";
 
   export default {
     components: {
-      SearchRestaurant,
       CreateQuestion,
       QuestionList
     },
