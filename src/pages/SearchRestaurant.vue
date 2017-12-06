@@ -21,8 +21,8 @@
           </button>
         </form>
       </div>
-      <!--<a class="delete is-large" v-on:click="closeModal"></a>-->
-      <router-link to="pool" class="button is-primary toPool is-right is-pulled-right">
+      <router-link class="delete back-to-pool is-large" to="pool"></router-link>
+      <router-link to="pool" class="button is-primary back-to-pool is-right is-pulled-right">
         Restaurant list
       </router-link>
 
@@ -173,12 +173,21 @@
       }
     },
     mounted() {
+
+
+      ZomatoService.getCollections().then(
+        (response) => {
+          console.log(response.data)
+        }
+      );
+
       this.isLoading = true;
 
       let query = {
         entity_id: '64',
         entity_type: 'city',
       };
+
       ZomatoService.search(query).then((response) => {
         this.isLoading = false;
         this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
@@ -285,5 +294,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .delete.back-to-pool {
+      display: none;
+      @include breakpoint(mobileonly) {
+        display: block;
+      }
+    }
+
+    .back-to-pool.button {
+      @include breakpoint(mobileonly) {
+        display: none;
+      }
+    }
   }
 </style>

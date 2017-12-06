@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import Login from '@/page/Login'
-import Pool from '@/page/Pool'
-import SearchRestaurant from '@/page/SearchRestaurant'
+import Login from '@/pages/Login'
+import Pool from '@/pages/Pool'
+import SearchRestaurant from '@/pages/SearchRestaurant'
 
 Vue.use(Router);
 

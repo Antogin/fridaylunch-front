@@ -32,7 +32,7 @@
     name: 'HelloWorld',
     data() {
       return {}
-    }
+    },
   }
 </script>
 

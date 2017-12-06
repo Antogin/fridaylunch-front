@@ -18,6 +18,25 @@ export default {
     return axios(authOptions)
   },
 
+  getCollections(){
+    const query = {
+      city_id: '64',
+    };
+
+    let authOptions = {
+      method: 'GET',
+      url: 'https://developers.zomato.com/api/v2.1/collections',
+      params: query,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'user-key': this.apiKey
+      },
+      json: true
+    };
+
+    return axios(authOptions)
+  },
+
   getEstablishment() {
     let establishmentQuery = {
       city_id: '64',
