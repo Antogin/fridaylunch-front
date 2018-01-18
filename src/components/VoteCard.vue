@@ -70,7 +70,11 @@
     },
 
 
-    methods: {}
+    methods: {
+      removeRestaurant: function (restaurant) {
+        this.$store.commit('removeRestaurant',restaurant)
+      },
+    }
   }
 </script>
 

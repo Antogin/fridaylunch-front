@@ -4,6 +4,8 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/pages/Login'
 import Pool from '@/pages/Pool'
 import SearchRestaurant from '@/pages/SearchRestaurant'
+import ExploreRestaurant from '@/pages/ExploreRestaurant'
+import Collection from '@/pages/Collection'
 
 Vue.use(Router);
 
@@ -21,6 +23,11 @@ export default new Router({
       component: Login
     },
     {
+      path: '/explore',
+      name: 'explore',
+      component: ExploreRestaurant
+    },
+    {
       path: '/pool',
       name: 'pool',
       component: Pool
@@ -29,6 +36,10 @@ export default new Router({
       path: '/search',
       name: 'search',
       component: SearchRestaurant
+    },
+    { path: '/collection/:id',
+      name: 'collection',
+      component: Collection
     }
   ]
 })

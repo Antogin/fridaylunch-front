@@ -1,79 +1,44 @@
 <template>
-  <div class="search-restaurant">
-    <div class="shadow"></div>
 
+  <div class="collection-list">
+    <!--<section class="hero is-primary is-medium" :style="{'background-image':selectedCollection? `url('${selectedCollection.image_url}')`  : ''}">-->
     <nav id="navbar" class="navbar is-fixed-top ">
 
 
       <div class="navbar-brand">
-        <form v-on:submit.prevent="search(searchQuery)">
-          <div class="zai-field">
-
-            <div class="control has-icons-left">
-              <input class="input" v-model="searchQuery" type="text" placeholder="Search">
-              <span class="icon is-small is-left">
-              <i class="fa fa-search"></i>
-            </span>
-            </div>
-          </div>
-          <button class="button is-primary" v-bind:class="{'is-loading': isLoading}" v-on:click="search(searchQuery)">
-            search
-          </button>
-        </form>
+        <h2 v-if="selectedCollection" class="title">
+          {{selectedCollection.title}}
+        </h2>
       </div>
       <router-link class="delete back-to-pool is-large" to="pool"></router-link>
-      <router-link to="pool" class="button is-primary back-to-pool is-right is-pulled-right">
+      <router-link to="/pool" class="button is-primary back-to-pool is-right is-pulled-right">
         Restaurant list
       </router-link>
 
     </nav>
-    <section class="section">
 
-      <div class="page-component">
-
-        <div class="filters">
-          <p class="tag" v-on:click="removeCuisine(tag)" v-for="tag in selectedCusines">
-            {{tag.cuisine_name}}</p>
-
-          <p class="tag" v-on:click="removeEstablishment(tag)" v-for="tag in selectedEstablishments">{{tag.name}}</p>
-
+    <div class="container">
+      <div class="restaurant-list" v-on:scroll="handleScroll($event)">
+        <div class="grid-item" v-for="searchedRestaurant in searchedRestaurants">
+          <restaurant-card v-bind:restaurant="searchedRestaurant"></restaurant-card>
         </div>
       </div>
-
-      <div class="search-view">
-        <div class="side-panel">
-          <panel></panel>
-        </div>
-        <div class="grid" v-on:scroll="handleScroll($event)">
-          <div class="grid-item" v-for="searchedRestaurant in searchedRestaurants">
-            <restaurant-card v-bind:restaurant="searchedRestaurant"></restaurant-card>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
   </div>
+
 </template>
-
 <script>
-  import Panel from "./../components/search/Panel.vue";
-  import RestaurantCard from "./../components/search/RestaurantCard.vue";
   import ZomatoService from "./../services/zomato.service";
-
+  import RestaurantCard from "./../components/search/RestaurantCard.vue";
 
   export default {
     components: {
       RestaurantCard,
-      Panel
     },
-    name: 'SearchRestaurant',
+    name: 'ExploreRestaurant',
     data() {
       return {
-        msg: 'Search',
-        searchQuery: '',
-        cuisineFilter: [],
-        establishmentFilter: [],
-        isLoading: false,
-        pageInfo: null
+        collection: null
       }
     },
     methods: {
@@ -164,67 +129,65 @@
       panelFiltersIsCollapsed: function () {
         return this.$store.state.ui.panelFiltersIsCollapsed
       },
-      selectedEstablishments() {
-        return this.$store.state.searchFilter.establishmentFilter.filter((establishment => establishment.isSelected))
-      },
 
-      selectedCusines() {
-        return this.$store.state.searchFilter.cuisineFilter.filter((establishment => establishment.isSelected))
+      selectedCollection: function () {
+
+        let selectedCollection = this.$store.state.explorePage.collections.filter((collection) => {
+          return collection.collection_id.toString() === this.$route.params.id
+        });
+
+        if (selectedCollection.length > 0) {
+          return selectedCollection[0]
+        }
+
+        return null
       }
     },
     mounted() {
+      console.log(this.$route);
 
+      if (!this.selectedCollection) {
+        ZomatoService.getCollections().then(
+          (response) => {
+            console.log(response.data);
+            this.$store.commit('setCollections', response.data.collections.map((item) => item.collection));
+          }
+        );
+      }
 
-      ZomatoService.getCollections().then(
-        (response) => {
-          console.log(response.data)
-        }
-      );
-
-      this.isLoading = true;
-
-      let query = {
-        entity_id: '64',
-        entity_type: 'city',
-      };
-
-      ZomatoService.search(query).then((response) => {
-        this.isLoading = false;
-        this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
-        this.$store.commit('setSearchRestaurantPage', {
-          step: response.data.results_shown,
-          start: response.data.results_start
-        });
-      })
+      ZomatoService.getCollection(this.$route.params.id)
+        .then(
+          (response) => {
+            console.log(response.data);
+            this.Collection = response.data;
+            this.$store.commit('setSearchRestaurant', response.data.restaurants.map((item) => item.restaurant));
+            this.$store.commit('setSearchRestaurantPage', {
+              step: response.data.results_shown,
+              start: response.data.results_start
+            });
+          }
+        );
     }
   }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style scoped lang="scss">
   @import "./../variables";
 
-  .search-restaurant {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: $d-black;
+  .hero {
+    background-color: #e7004d;
+    /*background-position: center;*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
   }
 
-  .tag {
-    margin-right: 3px;
-    background-color: $zai-pink;
-    color: white;
-    cursor: pointer;
+  .collection-list {
+    /*overflow: hidden;*/
+    margin-top: 125px;
   }
 
-  .grid {
+  .restaurant-list {
     display: grid;
-    height: calc(100vh - 75px);
     overflow: auto;
-    grid-template-rows: 480px;
     .grid-item {
       padding: 10px;
     }
@@ -242,50 +205,6 @@
     }
     @include breakpoint(mobileonly) {
       float: left;
-    }
-  }
-
-  .side-panel {
-    float: left;
-    @include breakpoint(notebook) {
-      width: 250px;
-    }
-
-    @include breakpoint(laptop) {
-      width: 350px;
-    }
-
-    @include breakpoint(mobileonly) {
-      width: 100%;
-    }
-
-  }
-
-  .page-component {
-    margin: 30px 0px 16px 0;
-  }
-
-  .delete {
-    position: absolute;
-    top: 17px;
-    right: 20px;
-    color: $zai-pink;
-  }
-
-  .delete:after {
-    background-color: $zai-pink;
-  }
-
-  .delete:before {
-    background-color: $zai-pink;
-  }
-
-  form {
-    display: flex;
-    align-items: center;
-    max-width: calc(100vw - 100px);
-    .button {
-      margin-left: 20px;
     }
   }
 

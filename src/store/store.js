@@ -14,6 +14,11 @@ export const store = new Vuex.Store({
     selectedRestaurants: [],
     searchedRestaurants: [],
 
+    explorePage: {
+      collectionInfo: {},
+      collections: []
+    },
+
     searchPageInfo: {
       start: null,
       step: null,
@@ -30,6 +35,7 @@ export const store = new Vuex.Store({
   },
 
   getters: {
+
     nextSearchPage: state => {
       return state.searchPageInfo.start + state.searchPageInfo.step;
     },
@@ -62,6 +68,12 @@ export const store = new Vuex.Store({
   },
 
   mutations: {
+
+    setCollections: (state, payload) => {
+
+      state.explorePage.collections = payload
+
+    },
 
     toggleCollapse: (state, payload) => {
       return state.ui.panelFiltersIsCollapsed = payload;
@@ -97,40 +109,40 @@ export const store = new Vuex.Store({
 
     addEstablishment: (state, id) => {
       return state.searchFilter.establishmentFilter = state.searchFilter.establishmentFilter.map((establishment) => {
-            if (establishment.id === id) {
-              establishment.isSelected = true;
-            }
-            return establishment;
+          if (establishment.id === id) {
+            establishment.isSelected = true;
           }
+          return establishment;
+        }
       )
     },
 
     removeEstablishment: (state, id) => {
       return state.searchFilter.establishmentFilter = state.searchFilter.establishmentFilter.map((establishment) => {
-            if (establishment.id === id) {
-              establishment.isSelected = false;
-            }
-            return establishment;
+          if (establishment.id === id) {
+            establishment.isSelected = false;
           }
+          return establishment;
+        }
       )
     },
 
     addCuisine: (state, id) => {
       return state.searchFilter.cuisineFilter = state.searchFilter.cuisineFilter.map((cuisine) => {
-            if (cuisine.cuisine_id === id) {
-              cuisine.isSelected = true;
-            }
-            return cuisine;
+          if (cuisine.cuisine_id === id) {
+            cuisine.isSelected = true;
           }
+          return cuisine;
+        }
       )
     },
     removeCuisine: (state, id) => {
       return state.searchFilter.cuisineFilter = state.searchFilter.cuisineFilter.map((cuisine) => {
-            if (cuisine.cuisine_id === id) {
-              cuisine.isSelected = false;
-            }
-            return cuisine;
+          if (cuisine.cuisine_id === id) {
+            cuisine.isSelected = false;
           }
+          return cuisine;
+        }
       )
     },
 
@@ -148,7 +160,7 @@ export const store = new Vuex.Store({
 
 
     setSearchRestaurant: (state, payload) => {
-      return state.searchedRestaurants = payload.map((restaurant) => {
+      state.searchedRestaurants = payload.map((restaurant) => {
         if (state.selectedRestaurants.map((restaurant) => restaurant.id).some((id) => id === restaurant.id)) {
           restaurant.isSelected = true
         } else {
@@ -156,6 +168,8 @@ export const store = new Vuex.Store({
         }
         return restaurant
       });
+
+      console.log( state.searchedRestaurants)
     },
 
     pushSearchRestaurant: (state, payload) => {

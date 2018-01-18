@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="media-content">
-          <p class="title is-4"> {{restaurant.name}}</p>
+          <p class="title is-4">{{restaurant.name}}</p>
           <p class="cuisines">{{restaurant.cuisines}}</p>
         </div>
       </div>
@@ -28,6 +28,10 @@
       <div class="content">
         <!--{{restaurant.cuisines}}-->
         <br>
+        <a v-bind:href="mapUrl" target="_blank">
+          <i class="fas fa-map-marker-alt"></i>
+        </a>
+
         {{restaurant.location.address}}
       </div>
     </div>
@@ -52,6 +56,15 @@
     props: ['restaurant'],
     data() {
       return {}
+    },
+    computed:{
+      mapUrl: function () {
+
+        let baseUrl = 'https://www.google.co.za/maps/search/';
+        let adress = this.restaurant.location.address.split(' ').join('+');
+        console.log(adress);
+        return baseUrl + adress
+      }
     },
     methods: {
       addRestaurant: function (restaurant) {
@@ -80,6 +93,10 @@
       font-size: 12px;
       color: white;
     }
+  }
+
+  .card{
+    height: 100%;
   }
 
   .card-footer {

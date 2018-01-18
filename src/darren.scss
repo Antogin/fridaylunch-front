@@ -58,6 +58,8 @@ a {
   background-color: #031e2f;
   color: white;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
   .card-header-title {
     color: $zai-pink;
 
@@ -72,6 +74,9 @@ a {
   }
   .card-footer-item:not(:last-child) {
     border-color: $d-black
+  }
+  .card-content {
+    flex: 1 0 auto;
   }
   .corner {
     width: 40px;
@@ -205,7 +210,8 @@ strong {
       border-bottom-color: $zai-pink;
     }
   }
-}
 
+
+}
 
 

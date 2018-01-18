@@ -3,8 +3,8 @@
     <p class="panel-heading">
       Categories
       <span class="icon" v-on:click="toggleCollapse(panelFiltersIsCollapsed)">
-        <i class="fa fa-angle-down" aria-hidden="true" v-if="panelFiltersIsCollapsed"></i>
-        <i class="fa fa-angle-up" aria-hidden="true" v-if="!panelFiltersIsCollapsed"></i>
+        <i class="fas fa-angle-down" aria-hidden="true" v-if="panelFiltersIsCollapsed"></i>
+        <i class="fas fa-angle-up" aria-hidden="true" v-if="!panelFiltersIsCollapsed"></i>
       </span>
     </p>
 
@@ -24,7 +24,7 @@
         <a class="panel-block panel-filter" v-for="cuisine in filteredCuisines" v-on:click="addCuisine(cuisine)"
            v-bind:class="{'is-active': cuisine.isSelected }">
         <span class="panel-icon">
-          <i class="fa fa-cutlery" aria-hidden="true"></i>
+          <i class="fa fa-utensils"></i>
         </span>
           {{cuisine.cuisine_name}}
         </a>
@@ -33,7 +33,7 @@
         <a class="panel-block panel-filter" v-for="establishment in filteredEstablishment" v-on:click="addEstablishment(establishment)"
            v-bind:class="{'is-active': establishment.isSelected }">
         <span class="panel-icon">
-          <i class="fa fa-cutlery" aria-hidden="true"></i>
+          <i class="fa fa-utensils"></i>
         </span>
           {{establishment.name}}
         </a>
@@ -116,10 +116,10 @@
 
       } else {
         ZomatoService.getCuisines()
-            .then((response) => {
-              this.$store.commit('setCuisines', response.data.cuisines);
-              localStorage.setItem('cuisines', JSON.stringify(response.data.cuisines));
-            });
+          .then((response) => {
+            this.$store.commit('setCuisines', response.data.cuisines);
+            localStorage.setItem('cuisines', JSON.stringify(response.data.cuisines));
+          });
 
       }
       if (establishments && establishments.length > 0) {
@@ -127,10 +127,10 @@
 
       } else {
         ZomatoService.getEstablishment()
-            .then((response) => {
-              this.$store.commit('setEstablishment', response.data.establishments);
-              localStorage.setItem('establishments', JSON.stringify(response.data.establishments));
-            });
+          .then((response) => {
+            this.$store.commit('setEstablishment', response.data.establishments);
+            localStorage.setItem('establishments', JSON.stringify(response.data.establishments));
+          });
 
       }
     },
@@ -162,6 +162,9 @@
         height: calc(100vh - 330px);
 
       }
+    }
+    .panel-icon {
+      color: white;
     }
   }
 

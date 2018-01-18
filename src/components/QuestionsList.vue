@@ -2,7 +2,11 @@
   <div class="question-list">
     <div class="list-header">
       <h1 class="title">Restaurant</h1>
-      <router-link to="search" class="button is-primary">Add restaurant</router-link>
+      <div class="navigation-button">
+        <router-link to="search" class="button is-primary">Search</router-link>
+        <router-link to="explore" class="button is-primary">Explore</router-link>
+      </div>
+
       <!--<a class="button is-primary" v-on:click="openModal" >Add restaurant</a>-->
 
     </div>
